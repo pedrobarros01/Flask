@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from resources.hotel import Hoteis, Hotel
+from resources.usuario import User, Cadastro
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
@@ -15,6 +16,8 @@ def cria_banco():
 
 api.add_resource(Hoteis, '/hoteis')
 api.add_resource(Hotel, '/hoteis/<string:hotel_id>')
+api.add_resource(User, '/usuarios/<int:user_id>')
+api.add_resource(Cadastro, '/cadastro')
 
 #http://127.0.0.1:5000/hoteis -> lista de hoteis 
 
