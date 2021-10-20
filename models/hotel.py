@@ -15,6 +15,27 @@ class HotelModel(banco.Model):
         self.estrelas = estrelas
         self.diaria = diaria
         self.cidade = cidade
+
+    @classmethod
+    def encontrar_hotel(cls, hotel_id):
+        hotel = cls.query.filter_by(hotel_id=hotel_id).first()
+        if hotel:
+            return hotel
+        return None  
+    
+    def salvar_hotel(self):
+        banco.session.add(self)
+        banco.session.commit()
+
+    def deletar_hotel(self):
+        banco.session.delete(self)
+        banco.session.commit()
+    def atualizar_hotel(self, nome, estrelas, diaria, cidade):
+        self.nome = nome
+        self.estrelas = estrelas
+        self.diaria = diaria
+        self.cidade = cidade
+
     def json(self):
         return {
             'hotel_id': self.hotel_id,
