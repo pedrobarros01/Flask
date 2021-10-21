@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_restful import Api
+from resources.site import Site, Sites
 from blacklist import BLACKLIST
 from resources.hotel import Hoteis, Hotel
 from resources.usuario import Login, User, Cadastro, Logout
@@ -33,6 +34,8 @@ api.add_resource(User, '/usuarios/<int:user_id>')
 api.add_resource(Cadastro, '/cadastro')
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
+api.add_resource(Sites, '/sites')
+api.add_resource(Site, '/sites/<string:url>')
 
 #http://127.0.0.1:5000/hoteis -> lista de hoteis 
 

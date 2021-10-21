@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+from models.site import SiteModel
 from models.hotel import HotelModel
 from flask_jwt_extended import jwt_required
 import sqlite3
@@ -41,7 +42,8 @@ class Hoteis(Resource):
                 'nome': linha[1],
                 'estrelas': linha[2],
                 'diaria': linha[3],
-                'cidade': linha[4]
+                'cidade': linha[4],
+                'site_id': linha[5]
             })
         return {'hoteis': hoteis}
 
@@ -52,6 +54,7 @@ class Hotel(Resource):
     argumentos.add_argument('estrelas', type=float, required=True, help="o campo precisa ser obrigatorio")
     argumentos.add_argument('diaria')
     argumentos.add_argument('cidade')
+    argumentos.add_argument('site_id', type=int, required=True, help="precisa do id do site deste hotel")
 
     def get(self, hotel_id):
         hotel = HotelModel.encontrar_hotel(hotel_id)
@@ -68,6 +71,9 @@ class Hotel(Resource):
         
         dados = Hotel.argumentos.parse_args()
         hotel = HotelModel(hotel_id, **dados)
+        if not SiteModel.encontrar_por_id(dados['site_id']):
+            return {'message': 'nao pode criar esse hotel, pois o id do site nao exite'}, 400
+
         try:
 
             hotel.salvar_hotel()
